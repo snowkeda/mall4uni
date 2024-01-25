@@ -27,19 +27,23 @@
               <view class="btn">
                 <label>
                   <checkbox
+                    class="price-check"
+                    borderColor="#D9D9D9"
+                    activeBackgroundColor="#E5432C"
+                    activeBorderColor="#E5432C"
+                    color="#fff"
                     :data-scindex="scIndex"
                     :data-index="index"
                     :value="prod.prodId"
                     :checked="prod.checked"
-                    color="#105c3e"
                     @tap="onSelectedItem"
                   />
                 </label>
               </view>
+              <view class="pic">
+                <image class="img" :src="prod.pic" mode="aspectFill"/>
+              </view>
               <view class="prodinfo">
-                <view class="pic">
-                  <image :src="prod.pic" />
-                </view>
                 <view class="opt">
                   <view class="prod-name">
                     {{ prod.prodName }}
@@ -49,15 +53,14 @@
                   </text>
                   <view class="price-count">
                     <view class="price">
-                      <text class="symbol">
-                        ￥
-                      </text>
-                      <text class="big-num">
-                        {{ wxs.parsePrice(prod.price)[0] }}
+                      <text class="symbol">￥</text>
+                      <text class="price-num big-num">{{wxs.parsePrice(prod.price)[0]}}.{{ wxs.parsePrice(prod.price)[1] }}</text>
+                     <!-- <text class="big-num">
+                        {{wxs.parsePrice(prod.price)[0]}}
                       </text>
                       <text class="small-num">
                         .{{ wxs.parsePrice(prod.price)[1] }}
-                      </text>
+                      </text> -->
                     </view>
                     <view class="m-numSelector">
                       <view
@@ -65,7 +68,7 @@
                         :data-scindex="scIndex"
                         :data-index="index"
                         @tap="onCountMinus"
-                      />
+                      >-</view>
                       <input
                         type="number"
                         :value="prod.prodCount"
@@ -76,7 +79,7 @@
                         :data-scindex="scIndex"
                         :data-index="index"
                         @tap="onCountPlus"
-                      />
+                      >+</view>
                     </view>
                   </view>
                 </view>
@@ -105,12 +108,17 @@
       class="cart-footer"
     >
       <view class="btn all">
-        <checkbox
-          :checked="allChecked"
-          color="#f7d731;"
-          @tap="onSelAll"
-        />
-        全选
+        <label>
+          <checkbox
+            borderColor="#D9D9D9"
+            activeBackgroundColor="#E5432C"
+            activeBorderColor="#E5432C"
+            color="#fff"
+            :checked="allChecked"
+            @tap="onSelAll"
+          />
+          全选
+        </label>
       </view>
       <view
         class="btn del"
@@ -122,15 +130,8 @@
         <view class="finally">
           <text>合计:</text>
           <view class="price">
-            <text class="symbol">
-              ￥
-            </text>
-            <text class="big-num">
-              {{ wxs.parsePrice(finalMoney)[0] }}
-            </text>
-            <text class="small-num">
-              .{{ wxs.parsePrice(finalMoney)[1] }}
-            </text>
+            <text class="symbol">￥</text>
+            <text class="price-num big-num">{{wxs.parsePrice(finalMoney)[0]}}.{{ wxs.parsePrice(finalMoney)[1] }}</text>
           </view>
         </view>
         <view
@@ -144,7 +145,7 @@
         class="btn settle"
         @tap="toFirmOrder"
       >
-        <text>结算</text>
+        <text>去结算</text>
       </view>
     </view>
     <!-- end 底部按钮 -->
@@ -181,6 +182,7 @@ const loadBasketData = () => {
         })
         shopCartItemDiscounts.value = shopCartItemDiscountsParam
         allChecked.value = false
+        console.log(shopCartItemDiscountsParam);
       } else {
         shopCartItemDiscounts.value = []
       }

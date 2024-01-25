@@ -3,10 +3,8 @@
   height: 100%;
   box-sizing: border-box;
   color: #333;
-  font-family: helvetica,'Heiti SC',PingFangSC-Light;
 }
 .price{
-  font-family: Arial;
   display: inline-block;
   color: #eb2444;
   padding-bottom:10rpx;
@@ -19,7 +17,7 @@
 }
 
 .big-num {
-  font-size: 32rpx;
+  font-size: 44rpx;
 }
 
 .small-num {

@@ -787,7 +787,7 @@ const toHomePage = () => {
  * 跳转到购物车
  */
 const toCartPage = () => {
-  uni.switchTab({
+  uni.navigateTo({
     url: '/pages/basket/basket'
   })
 }

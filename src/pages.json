@@ -157,7 +157,7 @@
     },
     {
       "path" : "pages/dome/dome",
-      "style" : 
+      "style" :
       {
         "navigationBarTitleText" : "",
         "enablePullDownRefresh" : false
@@ -165,7 +165,7 @@
     },
     {
       "path" : "pages/dome1/dome1",
-      "style" : 
+      "style" :
       {
         "navigationBarTitleText" : "",
         "enablePullDownRefresh" : false
@@ -188,12 +188,12 @@
         "iconPath": "/static/images/tabbar/category.png",
         "selectedIconPath": "/static/images/tabbar/category-sel.png"
       },
-      {
-        "pagePath": "pages/basket/basket",
-        "text": "购物车",
-        "iconPath": "/static/images/tabbar/basket.png",
-        "selectedIconPath": "/static/images/tabbar/basket-sel.png"
-      },
+      // {
+      //   "pagePath": "pages/basket/basket",
+      //   "text": "购物车",
+      //   "iconPath": "/static/images/tabbar/basket.png",
+      //   "selectedIconPath": "/static/images/tabbar/basket-sel.png"
+      // },
       {
         "pagePath": "pages/user/user",
         "text": "我的",
