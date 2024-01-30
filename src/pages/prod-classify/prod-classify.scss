@@ -1,6 +1,11 @@
 .container {
-  background: #fff;
-  margin: 7px;
+  padding: 7px;
+  background-color: #f6f6f6;
+  .classify{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 }
 .line-fix {
   width: 100%;
@@ -19,7 +24,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* 空 */
 .empty {
   display: block;
   width: 100%;

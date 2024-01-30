@@ -1,11 +1,12 @@
 <template>
   <view class="container">
-    <view>
+    <view class="classify">
       <block
         v-for="(item, index) in prodList"
         :key="index"
       >
-        <production :item="item" />
+        <commodity :prod="item" direction="vertical" />
+        <!-- <production :item="item" /> -->
       </block>
       <view
         v-if="!prodList.length"

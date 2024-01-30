@@ -1,6 +1,18 @@
 <template>
-  <view class="container">
-    <view class="bg-sear">
+  <view class="container index">
+    <uni-nav-bar :border="false" backgroundColor="transparent" color="#1A1A1A" leftWidth='120rpx'>
+      <template v-slot:left>
+        <view class="nav-left-text">商城</view>
+      </template>
+      <template v-slot:right>
+        <navigator url="/pages/basket/basket">
+          <uni-badge text="120" absolute="rightTop" size="small" class="badge-car" :offset="[4, 4]">
+            <image class="car" src="@/static/images/car.png"></image>
+          </uni-badge>
+        </navigator>
+      </template>
+    </uni-nav-bar>
+    <!-- <view class="bg-sear">
       <view class="scrolltop">
         <view
           class="section"
@@ -15,16 +27,14 @@
           </text>
         </view>
       </view>
-    </view>
+    </view> -->
 
     <view class="content">
       <!-- swiper -->
       <swiper
         :autoplay="autoplay"
-        :indicator-color="indicatorColor"
-        :interval="interval"
+        :interval="50000"
         :duration="duration"
-        :indicator-active-color="indicatorActiveColor + ' '"
         :circular="true"
         class="pic-swiper"
         indicator-dots
@@ -49,7 +59,7 @@
       </swiper>
       <!-- end swiper -->
 
-      <view class="cat-item">
+     <!-- <view class="cat-item">
         <view
           class="item"
           data-sts="1"
@@ -81,7 +91,7 @@
           <image src="@/static/images/icon/newprods.png" />
           <text>领优惠券</text>
         </view>
-      </view>
+      </view> -->
 
       <!-- 消息播放 -->
       <view
@@ -90,7 +100,7 @@
         @tap="onNewsPage"
       >
         <image
-          src="@/static/images/icon/horn.png"
+          src="@/static/images/horn.png"
           class="hornpng"
         />
         <swiper
@@ -136,44 +146,52 @@
               @tap="toClassifyPage"
             >
               <text class="more">
-                查看更多
+                更多
               </text>
+              <text class="arrow" />
             </view>
           </view>
+          <view class="yun-icon"></view>
           <view class="item-cont">
-            <block
-              v-for="(prod, index2) in item.prods"
-              :key="index2"
+            <swiper
+              :autoplay="autoplay"
+              :interval="50000"
+              :duration="duration"
+              :circular="true"
+              class="up-swiper"
+              indicator-color="rgba(255, 255, 255, .3)"
+              indicator-active-color="rgba(255, 255, 255, 1)"
+              display-multiple-items="3"
+              indicator-dots
             >
-              <view
-                class="prod-item"
-                :data-prodid="prod.prodId"
-                @tap="toProdPage"
-              >
-                <view>
-                  <view class="imagecont">
-                    <img-show
-                      :src="prod.pic"
-                      :class-list="['prodimg']"
-                    />
+              <template v-for="(prod, index2) in item.prods" :key="index2">
+                <swiper-item class="up-item">
+                  <view
+                    class="prod-box"
+                    :data-prodid="prod.prodId"
+                    @tap="toProdPage"
+                  >
+                    <view class="imagecont">
+                      <img-show
+                        :src="prod.pic"
+                        :class-list="['prodimg']"
+                      />
+                    </view>
+                    <view class="prod-text">
+                      {{ prod.prodName }}
+                    </view>
+                    <view class="price">
+                      <text class="symbol">￥</text>
+                      <text class="big-num">{{ wxs.parsePrice(prod.price)[0] }}.{{ wxs.parsePrice(prod.price)[1] }}
+                      </text>
+                    </view>
                   </view>
-                  <view class="prod-text">
-                    {{ prod.prodName }}
-                  </view>
-                  <view class="price">
-                    <text class="symbol">
-                      ￥
-                    </text>
-                    <text class="big-num">
-                      {{ wxs.parsePrice(prod.price)[0] }}
-                    </text>
-                    <text class="small-num">
-                      .{{ wxs.parsePrice(prod.price)[1] }}
-                    </text>
-                  </view>
-                </view>
-              </view>
-            </block>
+                </swiper-item>
+              </template>
+            </swiper>
+
+
+
           </view>
         </view>
 
@@ -197,48 +215,13 @@
               <text class="arrow" />
             </view>
           </view>
+
           <view class="hotsale-item-cont">
             <block
               v-for="(prod, index2) in item.prods"
               :key="index2"
             >
-              <view
-                class="prod-items"
-                :data-prodid="prod.prodId"
-                @tap="toProdPage"
-              >
-                <view class="hot-imagecont">
-                  <img-show
-                    :src="prod.pic"
-                    :class-list="['hotsaleimg']"
-                  />
-                </view>
-                <view class="hot-text">
-                  <view class="hotprod-text">
-                    {{ prod.prodName }}
-                  </view>
-                  <view class="prod-info">
-                    {{ prod.brief }}
-                  </view>
-                  <view class="prod-text-info">
-                    <view class="price">
-                      <text class="symbol">
-                        ￥
-                      </text>
-                      <text class="big-num">
-                        {{ wxs.parsePrice(prod.price)[0] }}
-                      </text>
-                      <text class="small-num">
-                        .{{ wxs.parsePrice(prod.price)[1] }}
-                      </text>
-                    </view>
-                    <image
-                      src="@/static/images/tabbar/basket-sel.png"
-                      class="basket-img"
-                    />
-                  </view>
-                </view>
-              </view>
+              <commodity :prod="prod" direction="vertical" />
             </block>
           </view>
         </view>
@@ -256,7 +239,8 @@
               v-for="(prod, index2) in item.prods"
               :key="index2"
             >
-              <view
+              <commodity :prod="prod" direction="horizontal" />
+              <!-- <view
                 class="show-item"
                 :data-prodid="prod.prodId"
                 @tap="toProdPage"
@@ -293,7 +277,7 @@
                     />
                   </view>
                 </view>
-              </view>
+              </view> -->
             </block>
           </view>
         </view>
@@ -304,8 +288,6 @@
 
 <script setup>
 const wxs = number()
-const indicatorColor = ref('#d1e5fb')
-const indicatorActiveColor = ref('#1b7dec')
 const autoplay = ref(true)
 const interval = ref(2000)
 const duration = ref(1000)

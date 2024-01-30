@@ -3,12 +3,12 @@
   <view class="container">
     <!-- 轮播图 -->
     <swiper
-      :indicator-dots="indicatorDots"
       :autoplay="autoplay"
       :indicator-color="indicatorColor"
       :interval="interval"
       :duration="duration"
       :indicator-active-color="indicatorActiveColor"
+      @change="changeHandle"
     >
       <block
         v-for="(item, index) in imgs"
@@ -19,6 +19,7 @@
         </swiper-item>
       </block>
     </swiper>
+    <view class="num-dots" v-if="imgs.length > 0">{{current}}/{{imgs.length}}</view>
     <!-- end  轮播图 -->
     <!-- 商品信息 -->
     <view class="prod-info">
@@ -26,7 +27,7 @@
         <view class="prod-tit">
           {{ prodName }}
         </view>
-        <view
+        <!-- <view
           class="col"
           @tap="addOrCannelCollection"
         >
@@ -39,22 +40,18 @@
             src="@/static/images/icon/prod-col-red.png"
           />
           收藏
-        </view>
+        </view> -->
       </view>
       <view class="sales-p">
         {{ brief }}
       </view>
       <view class="prod-price">
-        <text
-          v-if="defaultSku && defaultSku.price"
-          class="price"
-        >
-          ￥
-          <text class="price-num">
-            {{ wxs.parsePrice(defaultSku.price)[0] }}
-          </text>
-          .{{ wxs.parsePrice(defaultSku.price)[1] }}
-        </text>
+        <template v-if="defaultSku && defaultSku.price">
+          <view class="price">
+            <text class="symbol">￥</text>
+            <text class="price-num">{{ wxs.parsePrice(defaultSku.price)[0] }}.{{ wxs.parsePrice(defaultSku.price)[1] }}</text>
+          </view>
+        </template>
         <text
           v-if="defaultSku && defaultSku.oriPrice"
           class="ori-price"
@@ -80,7 +77,7 @@
       </view>
     </view>
     <!-- 评价 -->
-    <view class="cmt-wrap">
+    <!-- <view class="cmt-wrap">
       <view
         class="cmt-tit"
         @tap="showComment"
@@ -152,8 +149,9 @@
           </text>
         </view>
       </view>
-    </view>
+    </view> -->
     <!-- 商品详情 -->
+    <view class="spdq">商品详情</view>
     <view class="prod-detail">
       <view>
         <rich-text :nodes="content" />
@@ -162,150 +160,153 @@
     <!-- end 商品详情 -->
 
     <!-- 底部按钮 -->
-    <view class="cart-footer">
-      <view
+    <view class="cart-footer" v-if="!skuShow">
+     <!-- <view
         class="btn icon"
         @tap="toHomePage"
       >
         <image src="@/static/images/tabbar/homepage.png" />
-        首页
-      </view>
+      </view> -->
       <view
-        class="btn icon"
         @tap="toCartPage"
+        class="icon"
       >
-        <image src="@/static/images/tabbar/basket.png" />
-        购物车
+        <uni-badge :text="totalCartNum" absolute="rightTop" >
+          <image src="@/static/images/car.png" />
+         <!-- <view
+            v-if="totalCartNum>0"
+            class="badge badge-1"
+          >
+            {{ totalCartNum }}
+          </view> -->
+        </uni-badge>
+      </view>
+      <view>
         <view
-          v-if="totalCartNum>0"
-          class="badge badge-1"
+          class="btn cart"
+          @tap="showSku"
         >
-          {{ totalCartNum }}
+          <text>加入购物车</text>
         </view>
-      </view>
-      <view
-        class="btn cart"
-        @tap="showSku"
-      >
-        <text>加入购物车</text>
-      </view>
-      <view
-        class="btn buy"
-        @tap="showSku"
-      >
-        <text>立即购买</text>
+        <view
+          class="btn buy"
+          @tap="showSku"
+        >
+          <text>立即购买</text>
+        </view>
       </view>
     </view>
     <!-- end 底部按钮 -->
 
     <!-- 规格弹窗 -->
-    <view
-      v-if="skuShow"
-      class="pup-sku"
-    >
-      <view class="pup-sku-main">
-        <view class="pup-sku-header">
-          <image
-            class="pup-sku-img"
-            :src="defaultSku.pic?defaultSku.pic:pic"
-          />
-          <view class="pup-sku-price">
-            ￥
-            <text
-              v-if="defaultSku && defaultSku.price"
-              class="pup-sku-price-int"
-            >
-              {{ wxs.parsePrice(defaultSku.price)[0] }}
-            </text>
-            .{{ wxs.parsePrice(defaultSku.price)[1] }}
-          </view>
-          <view class="pup-sku-prop">
-            <text>已选</text>
-            {{ selectedProp.length > 0 ? selectedProp + '，' : '' }}{{ prodNum }}件
-          </view>
-          <view
-            class="close"
-            @tap="closePopup"
-          />
-        </view>
-        <view class="pup-sku-body">
-          <view class="pup-sku-area">
-            <view
-              v-if="skuList.length"
-              class="sku-box"
-            >
-              <block
-                v-for="(skuGroupItem, skuGroupItemIndex) in skuGroupList"
-                :key="skuGroupItemIndex"
+    <uni-popup ref="skuPopup" type="bottom" @change="changePopup">
+        <!-- v-if="skuShow" -->
+      <view
+        class="pup-sku"
+      >
+        <view class="pup-sku-main">
+          <view class="pup-sku-header">
+            <image
+              class="pup-sku-img"
+              :src="defaultSku.pic?defaultSku.pic:pic"
+            />
+            <view class="pup-sku-price">
+              ￥<text
+                v-if="defaultSku && defaultSku.price"
+                class="pup-sku-price-int"
               >
-                <view
-                  v-for="(skuLine, key) in skuGroupItem"
-                  :key="key"
-                  class="items sku-text"
+                {{ wxs.parsePrice(defaultSku.price)[0] }}.{{ wxs.parsePrice(defaultSku.price)[1] }}
+              </text>
+            </view>
+            <view class="pup-sku-prop">
+              <text>已选</text>
+              {{ selectedProp.length > 0 ? selectedProp + '，' : '' }}{{ prodNum }}件
+            </view>
+            <!-- <view
+              class="close"
+              @tap="closePopup"
+            /> -->
+          </view>
+          <view class="pup-sku-body">
+            <view class="pup-sku-area">
+              <view
+                v-if="skuList.length"
+                class="sku-box"
+              >
+                <block
+                  v-for="(skuGroupItem, skuGroupItemIndex) in skuGroupList"
+                  :key="skuGroupItemIndex"
                 >
-                  <text class="sku-kind">
-                    {{ key }}
-                  </text>
-                  <view class="con">
-                    <text
-                      v-for="skuLineItem in skuLine"
-                      :key="skuLineItem"
-                      class="sku-choose-item"
-                      :class="[selectedPropList.indexOf(key + ':' + skuLineItem) !== -1?'active':'',
-                               isSkuLineItemNotOptional(allProperties,selectedPropObj,key,skuLineItem,propKeys)? 'dashed' : '']"
-                      @click="toChooseItem(skuGroupItemIndex, skuLineItem, key)"
-                    >
-                      {{ skuLineItem }}
+                  <view
+                    v-for="(skuLine, key) in skuGroupItem"
+                    :key="key"
+                    class="items sku-text"
+                  >
+                    <text class="sku-kind">
+                      {{ key }}
                     </text>
+                    <view class="con">
+                      <text
+                        v-for="skuLineItem in skuLine"
+                        :key="skuLineItem"
+                        class="sku-choose-item"
+                        :class="[selectedPropList.indexOf(key + ':' + skuLineItem) !== -1?'active':'',
+                                 isSkuLineItemNotOptional(allProperties,selectedPropObj,key,skuLineItem,propKeys)? 'dashed' : '']"
+                        @click="toChooseItem(skuGroupItemIndex, skuLineItem, key)"
+                      >
+                        {{ skuLineItem }}
+                      </text>
+                    </view>
                   </view>
-                </view>
-              </block>
-            </view>
-          </view>
-          <view class="pup-sku-count">
-            <view class="num-wrap">
-              <view
-                class="minus"
-                @tap="onCountMinus"
-              >
-                <text class="row" />
+                </block>
               </view>
-              <view class="text-wrap">
-                <input
-                  type="number"
-                  :value="prodNum"
-                  disabled
+            </view>
+            <view class="pup-sku-count">
+              <view class="num-wrap">
+                <view
+                  class="minus"
+                  @tap="onCountMinus"
                 >
+                  <text class="row" />
+                </view>
+                <view class="text-wrap">
+                  <input
+                    type="number"
+                    :value="prodNum"
+                    disabled
+                  >
+                </view>
+                <view
+                  class="plus"
+                  @tap="onCountPlus"
+                >
+                  <text class="row" />
+                  <text class="col" />
+                </view>
               </view>
-              <view
-                class="plus"
-                @tap="onCountPlus"
-              >
-                <text class="row" />
-                <text class="col" />
+              <view class="count-name">
+                购买数量
               </view>
             </view>
-            <view class="count-name">
-              数量
+          </view>
+          <view class="pup-sku-footer">
+            <view
+              class="btn cart"
+              @tap="addToCart"
+            >
+              加入购物车
             </view>
-          </view>
-        </view>
-        <view class="pup-sku-footer">
-          <view
-            class="btn cart"
-            @tap="addToCart"
-          >
-            加入购物车
-          </view>
-          <view
-            class="btn buy"
-            @tap="buyNow"
-          >
-            立即购买
+            <view
+              class="btn buy"
+              @tap="buyNow"
+            >
+              立即购买
+            </view>
           </view>
         </view>
       </view>
-    </view>
+    </uni-popup>
+
 
     <!-- 评价弹窗 -->
     <view
@@ -438,6 +439,8 @@ const autoplay = ref(true)
 const interval = ref(3000)
 const duration = ref(1000)
 const selectedProp = ref([])
+const current = ref(1)
+const skuPopup = ref(null);
 let prodId = 0
 /**
  * 生命周期函数--监听页面加载
@@ -445,11 +448,10 @@ let prodId = 0
 onLoad((options) => {
   prodId = options.prodid// 加载商品信息
   getProdInfo() // 加载商品数据
-  getProdCommData() // 加载评论项
+  // getProdCommData() // 加载评论项
   getLittleProdComm() // 查看用户是否关注
   getCollection()
 })
-
 const app = getApp()
 const totalCartNum = ref(0)
 /**
@@ -468,6 +470,14 @@ onShareAppMessage(() => {
     path: '/pages/prod/prod?prodid=' + prodId
   }
 })
+
+const changeHandle = (obj) => {
+  current.value = obj.detail.current + 1
+}
+
+const changePopup = (e) => {
+  skuShow.value = e.show
+}
 
 const isCollection = ref(false)
 /**
@@ -818,6 +828,7 @@ const addToCart = () => {
         title: '加入购物车成功',
         icon: 'none'
       })
+      skuPopup.value.close()
     })
 }
 
@@ -857,6 +868,7 @@ const onCountPlus = () => {
 const skuShow = ref(false)
 const showSku = () => {
   skuShow.value = true
+  skuPopup.value.open()
 }
 
 const commentShow = ref(false)
@@ -867,6 +879,7 @@ const showComment = () => {
 const closePopup = () => {
   skuShow.value = false
   commentShow.value = false
+  skuPopup.value.close()
 }
 </script>
 

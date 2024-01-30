@@ -119,7 +119,7 @@
       <!--end 订单状态 -->
 
       <view class="prod-col">
-        <view
+       <!-- <view
           class="col-item"
           @tap="myCollectionHandle"
         >
@@ -138,7 +138,7 @@
           <view class="tit">
             我的收藏
           </view>
-        </view>
+        </view> -->
         <view
           class="col-item"
           @tap="handleTips"

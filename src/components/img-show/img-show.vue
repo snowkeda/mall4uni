@@ -46,7 +46,6 @@ const props = defineProps({
     default: false
   }
 })
-
 const imgPath = computed(() => {
   return util.checkFileUrl(props.src)
 })
