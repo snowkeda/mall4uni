@@ -23,12 +23,15 @@
         >
       </view>
       <view
-        class="section"
+        class="section city"
         @tap="translate"
       >
         <text>所在地区</text>
         <view class="pca">
           {{ province }} {{ city }} {{ area }}
+          <view class="arrow">
+            <image src="@/static/images/pca.png" />
+          </view>
         </view>
         <view
           class="animation-element-wrapper"
@@ -83,10 +86,6 @@
             </picker-view>
           </view>
         </view>
-
-        <view class="arrow">
-          <image src="@/static/images/icon/more.png" />
-        </view>
       </view>
       <view class="section">
         <text>详细地址</text>
@@ -102,18 +101,17 @@
     <!-- 功能按钮 -->
     <view class="btn-box">
       <view
-        class="keep btn"
-        @tap="onSaveAddr"
-      >
-        <text>保存收货地址</text>
-      </view>
-
-      <view
         v-if="addrId!=0"
         class="clear btn"
         @tap="onDeleteAddr"
       >
         <text>删除收货地址</text>
+      </view>
+      <view
+        class="keep btn"
+        @tap="onSaveAddr"
+      >
+        <text>保存收货地址</text>
       </view>
     </view>
     <!-- end 功能按钮 -->

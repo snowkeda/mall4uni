@@ -1,0 +1,64 @@
+.container {
+  height: auto;
+  background: url('@/static/images/index-top.png') no-repeat;
+  background-size: contain;
+  background-color: #f6f6f6;
+  .nav-left-text{
+    color: #1A1A1A;
+    text-align: center;
+    font-size: 44rpx;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 40rpx; /* 90.909% */
+  }
+  .badge-car{
+    margin-right: 20rpx;
+  }
+  .car{
+    width: 48rpx;
+    height: 48rpx;
+
+  }
+  .mat-swiper{
+    margin: 0 24rpx;
+    height: 300rpx;
+    border-radius: 12rpx;
+    overflow: hidden;
+    image{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .matter-list{
+    padding: 24rpx 24rpx 0 24rpx;
+    .matter{
+      background-color: #fff;
+      border-radius: 12rpx;
+      padding: 24rpx;
+      margin-bottom: 24rpx;
+      .title{
+        color: #1A1A1A;
+        font-size: 36rpx;
+        font-weight: 500;
+        line-height: 40rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+      .content{
+        margin-top: 12rpx;
+        font-size: 28rpx;
+        font-weight: 400;
+        height: 72rpx;
+        line-height: 36rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+}

@@ -7,8 +7,28 @@
         "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTextStyle": "black",
-        "enablePullDownRefresh": true,
-        "navigationBarTitleText": "mall4j"
+        "navigationBarTitleText": "首页",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/material/material",
+      "style" :
+      {
+        "navigationStyle": "custom",
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "素材",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/material/detail",
+      "style": {
+        "navigationBarTitleText": "详情",
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff"
       }
     },
     {
@@ -174,8 +194,8 @@
     }
   ],
   "tabBar": {
-    "selectedColor": "#3a86b9",
-    "color": "#b8b8b8",
+    "selectedColor": "#E5432C",
+    "color": "#1A1A1A",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -184,11 +204,18 @@
         "selectedIconPath": "/static/images/tabbar/homepage-sel.png"
       },
       {
-        "pagePath": "pages/category/category",
+        "pagePath": "https://uniapp.dcloud.io",
         "text": "分类",
-        "iconPath": "/static/images/tabbar/category.png",
-        "selectedIconPath": "/static/images/tabbar/category-sel.png"
+        "iconPath": "/static/images/tabbar/toolset.png",
+        "selectedIconPath": "/static/images/tabbar/toolset-sel.png"
       },
+      {
+        "pagePath": "pages/material/material",
+        "text": "素材",
+        "iconPath": "/static/images/tabbar/material.png",
+        "selectedIconPath": "/static/images/tabbar/material-sel.png"
+      },
+
       // {
       //   "pagePath": "pages/basket/basket",
       //   "text": "购物车",

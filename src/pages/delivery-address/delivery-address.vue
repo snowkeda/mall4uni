@@ -29,11 +29,6 @@
                 <text class="tel">
                   {{ item.mobile }}
                 </text>
-                <image
-                  src="@/static/images/icon/revise.png"
-                  :data-addrid="item.addrId"
-                  @tap.stop="toEditAddress"
-                />
               </view>
               <view class="addr">
                 <text class="addr-get">
@@ -41,21 +36,36 @@
                 </text>
               </view>
             </view>
-            <view
-              class="select-btn"
-              :data-addrid="item.addrId"
-              @tap="onDefaultAddr"
-            >
-              <view class="box">
-                <radio
-                  :value="item.prodId"
-                  :checked="item.commonAddr==1"
-                  color="#eb2444"
-                  :data-addrid="item.addrId"
-                  @tap="onDefaultAddr"
-                />
-                设为默认地址
+            <view class="default-edit">
+              <view
+                class="select-btn"
+              >
+                <label class="box">
+                  <radio
+                    :value="item.prodId"
+                    :checked="item.commonAddr==1"
+                    color="#F95604"
+                    :data-addrid="item.addrId"
+                    style="transform:scale(0.7)"
+                    @tap="onDefaultAddr"
+                  />设为默认地址
+                </label>
               </view>
+              <view class="edit-del">
+                <image
+                  class="edit"
+                  src="@/static/images/revise.png"
+                  :data-addrid="item.addrId"
+                  @tap.stop="toEditAddress"
+                />
+                <image
+                  class="del"
+                  src="@/static/images/delete.png"
+                  :data-addrid="item.addrId"
+                  @tap.stop="onDeleteAddr"
+                />
+              </view>
+
             </view>
           </view>
         </block>
@@ -152,6 +162,32 @@ const selAddrToOrder = (item) => {
       delta: 1
     })
   }
+}
+
+/**
+ * 删除配送地址
+ */
+const onDeleteAddr = (e) => {
+  const addrId = e.currentTarget.dataset.addrid
+  uni.showModal({
+    title: '',
+    content: '确定要删除此收货地址吗？',
+    confirmColor: '#eb2444',
+    success (res) {
+      if (res.confirm) {
+        const addrIdParam = e.currentTarget.dataset.addrid
+        uni.showLoading()
+        http.request({
+          url: '/p/address/deleteAddr/' + addrIdParam,
+          method: 'DELETE'
+        })
+        .then(() => {
+          uni.hideLoading()
+          onGetList()
+        })
+      }
+    }
+  })
 }
 </script>
 

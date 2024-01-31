@@ -6,7 +6,7 @@
       </template>
       <template v-slot:right>
         <navigator url="/pages/basket/basket">
-          <uni-badge text="120" absolute="rightTop" size="small" class="badge-car" :offset="[4, 4]">
+          <uni-badge :text="totalCartCount" absolute="rightTop" size="small" class="badge-car" :offset="[4, 4]">
             <image class="car" src="@/static/images/car.png"></image>
           </uni-badge>
         </navigator>
@@ -296,7 +296,7 @@ const seq = ref(0)
 const news = ref([])
 const taglist = ref([])
 const updata = ref(true)
-
+const totalCartCount = ref(0)
 onLoad(() => {
   getAllData()
 })
@@ -313,6 +313,9 @@ onShow(() => {
   })
   // #endif
   http.getCartCount() // 重新计算购物车总数量
+  setTimeout(() => {
+    totalCartCount.value = getApp().globalData.totalCartCount
+  }, 600)
 })
 
 onPullDownRefresh(() => {

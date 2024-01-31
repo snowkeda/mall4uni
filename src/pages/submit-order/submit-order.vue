@@ -1,6 +1,7 @@
 <template>
   <view>
     <view class="container">
+      <view class="top-line"></view>
       <view class="submit-order">
         <!-- 收货地址 -->
         <view
@@ -24,7 +25,7 @@
             class="addr-bg whole"
           >
             <view class="addr-icon">
-              <image src="@/static/images/icon/addr.png" />
+              <image src="@/static/images/addr.png" />
             </view>
             <view class="user-info">
               <text class="item">
@@ -52,37 +53,34 @@
               :data-ordernum="item.primaryOrderNo"
               @tap="toOrderDetailPage"
             >
-              <view class="prod-pic">
-                <image :src="item.pic" />
+              <view class="pic-info">
+                <view class="prod-pic">
+                  <image :src="item.pic" />
+                </view>
+                <view class="prod-info">
+                  <view class="prodname">
+                    {{ item.prodName }}
+                  </view>
+                  <view class="prod-info-cont">
+                    {{ item.skuName }}
+                  </view>
+                </view>
               </view>
-              <view class="prod-info">
-                <view class="prodname">
-                  {{ item.prodName }}
-                </view>
-                <view class="prod-info-cont">
-                  {{ item.skuName }}
-                </view>
-                <view class="price-nums">
-                  <text class="prodprice">
-                    <text class="symbol">
-                      ￥
-                    </text>
-                    <text class="big-num">
-                      {{ wxs.parsePrice(item.price)[0] }}
-                    </text>
-                    <text class="small-num">
-                      .{{ wxs.parsePrice(item.price)[1] }}
-                    </text>
+              <view class="price-nums">
+                <text class="prodprice">
+                  <text class="symbol">￥</text>
+                  <text class="big-num">
+                    {{ wxs.parsePrice(item.price)[0] }}.{{ wxs.parsePrice(item.price)[1] }}
                   </text>
-                  <text class="prodcount">
-                    x{{ item.prodCount }}
-                  </text>
-                </view>
+                </text>
+                <text class="prodcount">
+                  x{{ item.prodCount }}
+                </text>
               </view>
             </view>
           </block>
 
-          <view class="total-num">
+         <!-- <view class="total-num">
             <text class="prodcount">
               共{{ totalCount }}件商品
             </text>
@@ -98,32 +96,14 @@
                 .{{ wxs.parsePrice(total)[1] }}
               </text>
             </view>
-          </view>
+          </view> -->
         </view>
 
         <!-- 订单详情 -->
-        <view class="order-msg">
+        <view class="order-msg ly">
           <view class="msg-item">
-            <view
-              class="item coupon"
-              @tap="showCouponPopup"
-            >
-              <text class="item-tit">
-                优惠券：
-              </text>
-              <text
-                v-if="!coupons.canUseCoupons"
-                class="item-txt"
-              >
-                暂无可用
-              </text>
-              <text class="coupon-btn">
-                {{ coupons.totalLength ? coupons.totalLength : 0 }}张
-              </text>
-              <text class="arrow" />
-            </view>
-            <view class="item">
-              <text>买家留言：</text>
+            <view class="item remarks">
+              <text>买家留言</text>
               <input
                 v-model="remarks"
                 placeholder="给卖家留言"
@@ -136,53 +116,56 @@
           <view class="msg-item">
             <view class="item">
               <view class="item-tit">
-                订单总额：
+                订单总额
               </view>
               <view class="item-txt price">
-                <text class="symbol">
-                  ￥
-                </text>
+                <text class="symbol">￥</text>
                 <text class="big-num">
-                  {{ wxs.parsePrice(total)[0] }}
+                  {{ wxs.parsePrice(total)[0] }}.{{ wxs.parsePrice(total)[1] }}
                 </text>
-                <text class="small-num">
-                  .{{ wxs.parsePrice(total)[1] }}
+              </view>
+            </view>
+            <view
+              class="item coupon"
+              @tap="showCouponPopup"
+            >
+              <text class="item-tit">
+                优惠券
+              </text>
+              <text
+                v-if="!coupons.canUseCoupons"
+                class="no-cc"
+              >
+                暂无可用
+              </text>
+              <text class="coupon-btn" v-if="coupons.canUseCoupons">
+                {{ coupons.totalLength ? coupons.totalLength : 0 }}张
+              </text>
+              <text class="arrow" />
+            </view>
+            <view class="item">
+              <view class="item-tit">
+                运费
+              </view>
+              <view class="item-txt price">
+                <text class="symbol">￥</text>
+                <text class="big-num">
+                  {{ wxs.parsePrice(transfee)[0] }}.{{ wxs.parsePrice(transfee)[1] }}
                 </text>
               </view>
             </view>
             <view class="item">
               <view class="item-tit">
-                运费：
+                优惠金额
               </view>
               <view class="item-txt price">
-                <text class="symbol">
-                  ￥
-                </text>
+                <text class="symbol">-￥</text>
                 <text class="big-num">
-                  {{ wxs.parsePrice(transfee)[0] }}
-                </text>
-                <text class="small-num">
-                  .{{ wxs.parsePrice(transfee)[1] }}
+                  {{ wxs.parsePrice(shopReduce)[0] }}.{{ wxs.parsePrice(shopReduce)[1] }}
                 </text>
               </view>
             </view>
-            <view class="item">
-              <view class="item-tit">
-                优惠金额：
-              </view>
-              <view class="item-txt price">
-                <text class="symbol">
-                  -￥
-                </text>
-                <text class="big-num">
-                  {{ wxs.parsePrice(shopReduce)[0] }}
-                </text>
-                <text class="small-num">
-                  .{{ wxs.parsePrice(shopReduce)[1] }}
-                </text>
-              </view>
-            </view>
-            <view class="item payment">
+            <!-- <view class="item payment">
               <view class="item-txt price">
                 小计：
                 <text class="symbol">
@@ -195,7 +178,7 @@
                   .{{ wxs.parsePrice(actualTotal)[1] }}
                 </text>
               </view>
-            </view>
+            </view> -->
           </view>
         </view>
       </view>
@@ -204,16 +187,11 @@
       <view class="submit-order-footer">
         <view class="sub-order">
           <view class="item-txt">
-            合计：
+            需付款
             <view class="price">
-              <text class="symbol">
-                ￥
-              </text>
+              <text class="symbol">￥</text>
               <text class="big-num">
-                {{ wxs.parsePrice(actualTotal)[0] }}
-              </text>
-              <text class="small-num">
-                .{{ wxs.parsePrice(actualTotal)[1] }}
+                {{ wxs.parsePrice(actualTotal)[0] }}.{{ wxs.parsePrice(actualTotal)[1] }}
               </text>
             </view>
           </view>
@@ -313,6 +291,7 @@ const userAddr = ref(null)
  */
 onShow(() => {
   const pages = getCurrentPages()
+  console.log(pages)
   const currPage = pages[pages.length - 1]
   if (currPage.selAddress === 'yes') {
     // 将携带的参数赋值
@@ -356,7 +335,8 @@ const loadOrderData = () => {
       uni.hideLoading()
       let orderItemsData = []
       data.shopCartOrders[0].shopCartItemDiscounts?.forEach(itemDiscount => {
-        orderItemsData = orderItems.value?.concat(itemDiscount.shopCartItems)
+        // orderItemsData = orderItems.value?.concat(itemDiscount.shopCartItems)
+        orderItemsData = itemDiscount.shopCartItems
       })
       if (data.shopCartOrders[0].coupons) {
         const canUseCoupons = []
@@ -374,6 +354,7 @@ const loadOrderData = () => {
           unCanUseCoupons
         }
       }
+      console.log(orderItemsData)
       orderItems.value = orderItemsData
       actualTotal.value = data.actualTotal
       total.value = data.total

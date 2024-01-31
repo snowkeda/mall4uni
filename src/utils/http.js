@@ -120,10 +120,10 @@ const http = {
     })
       .then(({ data }) => {
         if (data > 0) {
-          uni.setTabBarBadge({
-            index: 2,
-            text: data + ''
-          })
+          // uni.setTabBarBadge({
+          //   index: 2,
+          //   text: data + ''
+          // })
           getApp().globalData.totalCartCount = data
         } else {
           uni.removeTabBarBadge({
