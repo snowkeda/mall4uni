@@ -92,6 +92,7 @@
         color: #1A1A1A;
         font-size: 30rpx;
         font-weight: 400;
+        height: 80rpx;
         line-height: 40rpx; /* 133.333% */
         overflow: hidden;
         display: -webkit-box;

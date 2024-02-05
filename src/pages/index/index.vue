@@ -33,7 +33,7 @@
       <!-- swiper -->
       <swiper
         :autoplay="autoplay"
-        :interval="50000"
+        :interval="5000"
         :duration="duration"
         :circular="true"
         class="pic-swiper"
@@ -51,7 +51,9 @@
                 :src="item.imgUrl"
                 :data-prodid="item.relation"
                 class="banner"
+                :lazy-load="true"
                 @tap="toProdPage"
+                mode="aspectFill"
               />
             </view>
           </swiper-item>
@@ -101,6 +103,7 @@
       >
         <image
           src="@/static/images/horn.png"
+          :lazy-load="true"
           class="hornpng"
         />
         <swiper
@@ -283,6 +286,7 @@
         </view>
       </block>
     </view>
+    <my-tabbar :value="0"></my-tabbar>
   </view>
 </template>
 
@@ -325,7 +329,6 @@ onPullDownRefresh(() => {
     uni.stopPullDownRefresh() // 停止下拉刷新
   }, 100)
 })
-
 const getAllData = () => {
   http.getCartCount()// 重新计算购物车总数量
   getIndexImgs()

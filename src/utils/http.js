@@ -4,6 +4,10 @@ import loginMethods from './login'
 
 const http = {
   request: async function (params) {
+    const pages = getCurrentPages();
+    // 获取url
+    const urlToken = pages[0].$page.options.token;
+    urlToken && uni.setStorageSync('urlToken', token);
     // 请求参数处理
     if (Object.prototype.toString.call(params.data) === '[object Array]') {
       params.data = JSON.stringify(params.data)
@@ -17,12 +21,14 @@ const http = {
     }
     // 发起请求
     return new Promise((resolve, reject) => {
+      const header = urlToken ? {
+        Authorization: uni.getStorageSync('Token'),
+        token: uni.getStorageSync('urlToken')
+      } : { Authorization: uni.getStorageSync('Token') };
       uni.request({
         dataType: 'json',
         responseType: params.responseType === undefined ? 'text' : params.responseType,
-        header: {
-          Authorization: uni.getStorageSync('Token')
-        },
+        header,
         url: (params.domain ? params.domain : import.meta.env.VITE_APP_BASE_API) + params.url,
         data: params.data,
         method: params.method === undefined ? 'POST' : params.method,
@@ -46,6 +52,7 @@ const http = {
             uni.removeStorageSync('expiresTimeStamp')
             uni.removeStorageSync('loginResult')
             uni.removeStorageSync('Token')
+            uni.removeStorageSync('urlToken')
             if (!params.dontTrunLogin) {
               uni.showModal({
                 title: '提示',

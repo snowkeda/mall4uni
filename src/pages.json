@@ -191,6 +191,14 @@
         "navigationBarTitleText" : "",
         "enablePullDownRefresh" : false
       }
+    },
+    {
+      "path" : "pages/toolset/toolset",
+      "style" :
+      {
+        "navigationBarTitleText" : "",
+        "enablePullDownRefresh" : false
+      }
     }
   ],
   "tabBar": {
@@ -204,8 +212,8 @@
         "selectedIconPath": "/static/images/tabbar/homepage-sel.png"
       },
       {
-        "pagePath": "https://uniapp.dcloud.io",
-        "text": "分类",
+        "pagePath": "pages/toolset/toolset",
+        "text": "工具集合",
         "iconPath": "/static/images/tabbar/toolset.png",
         "selectedIconPath": "/static/images/tabbar/toolset-sel.png"
       },

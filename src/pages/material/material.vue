@@ -33,7 +33,9 @@
       </template>
     </view>
     <uni-load-more :status="moreStatus" iconSize="14"></uni-load-more>
+    <my-tabbar :value='2'></my-tabbar>
 	</view>
+
 </template>
 
 <script setup>
@@ -101,7 +103,7 @@
         pageNo.value = current;
         if (pages >= current) {
           matterList.value = [...matterList.value, ...res.data.records]
-          moreStatus.value = "more";
+          moreStatus.value = pages === 1 ? "no-more" : "more";
         }
       }
     })

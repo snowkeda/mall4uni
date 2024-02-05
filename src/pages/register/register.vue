@@ -124,7 +124,8 @@ const toRegister = () => {
       method: 'post',
       data: {
         userName: principal.value,
-        passWord: encrypt(credentials.value)
+        passWord: credentials.value,
+        // passWord: encrypt(credentials.value)
       }
     })
       .then(() => {

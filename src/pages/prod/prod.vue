@@ -536,12 +536,12 @@ const getProdInfo = () => {
   })
     .then(({ data }) => {
       uni.hideLoading()
-      if (!data) {
-        setTimeout(() => {
-          uni.navigateBack()
-        }, 1000)
-        return
-      }
+      // if (!data) {
+      //   setTimeout(() => {
+      //     uni.navigateBack()
+      //   }, 1000)
+      //   return
+      // }
       imgs.value = data.imgs?.split(',')
       content.value = util.formatHtml(data.content)
       price.value = data.price

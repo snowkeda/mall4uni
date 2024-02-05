@@ -127,7 +127,8 @@ const login = () => {
       method: 'post',
       data: {
         userName: principal.value,
-        passWord: encrypt(credentials.value)
+        // passWord: encrypt()
+        passWord: credentials.value
       }
     })
       .then(({ data }) => {

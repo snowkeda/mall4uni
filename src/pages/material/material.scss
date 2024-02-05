@@ -1,5 +1,5 @@
 .container {
-  height: auto;
+  min-height: calc(100vh - 100rpx);
   background: url('@/static/images/index-top.png') no-repeat;
   background-size: contain;
   background-color: #f6f6f6;

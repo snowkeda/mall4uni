@@ -10,6 +10,8 @@
           </template>
         </view>
       </view>
+      <!-- <button @tap="saveImages(detail.imageUrls)">保存图片素材</button> -->
+      <!-- <button class="previewBtn" @click="toDownload(imgs)">保存图片素材</button> -->
     </view>
   </view>
 </template>
@@ -17,7 +19,21 @@
 <script setup>
   import { onLoad } from '@dcloudio/uni-app';
   const detail = ref({});
+  const fileUrl = ref(null);
+  const fileType = ref(null)
+  const imgs = ref([
+    {
+      type: '1',
+      name: '下载图片',
+      src: '/static/images/cloud-icon.png'
+    },{
+      type: '1',
+      name: '下载图片',
+      src: '/static/images/matter-bg.png'
+    },
+  ])
   onLoad((query) => {
+    console.log(query)
     query && getDetail(query.id)
   })
   const getDetail = async (id) => {
@@ -31,6 +47,36 @@
       }
     })
   }
+  //H5下载图片到本地
+  const downloadH5 = (url) => {
+   uni.downloadFile({
+  		url: url, //仅为示例，并非真实的资源
+  		success: (res) => {
+  			console.log(res)
+  			if (res.statusCode === 200) {
+  				console.log('下载成功');
+  				var oA = document.createElement("a");
+  				oA.download = Date.now(); // 设置下载的文件名，默认是'下载'
+  				oA.href = res.tempFilePath; //临时路径再保存到本地
+  				document.body.appendChild(oA);
+  				oA.click();
+  				// oA.remove(); // 下载之后把创建的元素删除
+  			}
+  		}
+  	});
+  }
+
+  const saveImages = (urls, index) => {
+    // #ifdef H5
+    urls.forEach(function(url) {
+      setTimeout(() => {
+        downloadH5(url)
+
+      }, 500 * index)
+    })
+    // #endif
+  }
+
 </script>
 
 <style scoped lang="scss">

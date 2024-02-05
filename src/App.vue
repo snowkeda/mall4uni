@@ -1,5 +1,10 @@
 <script setup>
-http.getCartCount()
+import { onLoad, onShow, onInit } from '@dcloudio/uni-app';
+  onLoad((e) => {
+    http.getCartCount();
+    uni.hideTabBar();
+  })
+
 </script>
 
 <style lang="scss" scoped>

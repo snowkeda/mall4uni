@@ -236,6 +236,7 @@
       </view>
     </view>
   </view>
+  <my-tabbar :value='3'></my-tabbar>
 </template>
 
 <script setup>
@@ -356,6 +357,7 @@ const logout = () => {
       util.removeTabBadge()
       uni.removeStorageSync('loginResult')
       uni.removeStorageSync('token')
+      uni.removeStorageSync('urlToken')
       uni.showToast({
         title: '退出成功',
         icon: 'none'

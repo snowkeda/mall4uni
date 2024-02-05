@@ -4,6 +4,7 @@
     :src="imgPath"
     :style="imgStyle"
     :class="classList"
+    :lazy-load="true"
     :mode="imgMode"
     @error="imgError"
     @load="imgLoad"
