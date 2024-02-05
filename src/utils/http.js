@@ -7,7 +7,7 @@ const http = {
     const pages = getCurrentPages();
     // 获取url
     const urlToken = pages[0].$page.options.token;
-    urlToken && uni.setStorageSync('urlToken', token);
+    urlToken && uni.setStorageSync('urlToken', urlToken);
     // 请求参数处理
     if (Object.prototype.toString.call(params.data) === '[object Array]') {
       params.data = JSON.stringify(params.data)
